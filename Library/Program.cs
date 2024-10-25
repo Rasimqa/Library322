@@ -17,6 +17,12 @@ builder.Services.AddDbContext<APIDB>(options =>
 
 builder.Services.AddScoped<IBookService, BookService>();
 
+builder.Services.AddScoped<IGenreService, GenreService>();
+
+builder.Services.AddScoped<IReaderService, ReaderService>();
+
+builder.Services.AddScoped<IRentService, RentService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

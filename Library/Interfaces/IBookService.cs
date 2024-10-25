@@ -6,6 +6,7 @@ namespace Library.Interfaces
 {
     public interface IBookService
     {
+        Task<ActionResult<IEnumerable<Book>>> GetBookFilter([FromQuery] FilterBook filter);
         Task<ActionResult<IEnumerable<Book>>> GetBooks([FromQuery] PagePag pag);
 
         Task<ActionResult<Book>> GetBook(int id);

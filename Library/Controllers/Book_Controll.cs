@@ -23,6 +23,11 @@ namespace Library.Controllers
             _bookService = bookService;
         }
         // Получение списка всех книг находящиеся в Базе данных
+        [HttpGet("BookFilter")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBookFilter([FromQuery] FilterBook filter)
+        {
+            return await _bookService.GetBookFilter(filter);
+        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks([FromQuery] PagePag pag)
         {
