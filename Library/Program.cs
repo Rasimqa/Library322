@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Library.DBContext;
 using Library.Interfaces;
 using Library.Service;
+using ProxyKit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,20 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseWhen(context => context.Request.Path.Value.Contains("/api/Books"),
+    applicationBuilder => applicationBuilder.RunProxy(context =>
+        context.ForwardTo("https://localhost:7003").AddXForwardedHeaders().Send()));
+app.UseWhen(context => context.Request.Path.Value.Contains("/api/Genres"),
+    applicationBuilder => applicationBuilder.RunProxy(context =>
+        context.ForwardTo("https://localhost:7095").AddXForwardedHeaders().Send()));
+app.UseWhen(context => context.Request.Path.Value.Contains("/api/Rent"),
+    applicationBuilder => applicationBuilder.RunProxy(context =>
+        context.ForwardTo("https://localhost:7009").AddXForwardedHeaders().Send()));
+app.UseWhen(context => context.Request.Path.Value.Contains("/api/Readers"),
+    applicationBuilder => applicationBuilder.RunProxy(context =>
+        context.ForwardTo("https://localhost:7234").AddXForwardedHeaders().Send()));
+
 
 app.MapControllers();
 
